@@ -62,7 +62,7 @@ export default class EditProduct extends Component{
         axios.put('http://localhost:5000/api/products/'+this.props.match.params.id,product)
         .then(res=>console.log(res.data));
         //this will send to home page
-        //window.location="/";
+        window.location="/";
     }
     render()
     {

@@ -47,7 +47,7 @@ export default class CreateProduct extends Component {
         axios.post('http://localhost:5000/api/products', product)
             .then(res => console.log(res.data));
         //this will send to home page
-        //window.location="/";
+        window.location="/";
     }
 
     render() {
