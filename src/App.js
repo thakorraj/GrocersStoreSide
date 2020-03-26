@@ -3,15 +3,18 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import Navbar from "./components/navbar.component"
 import ProductList from "./components/product-list.component";
-import OldComponent from "./components/old-component.component";
+import CreateProduct from "./components/create-product.component";
+import EditProduct from "./components/edit-product.component";
 
 function App() {
     return (
         <Router>
             <Navbar/>
             <br/>
-            <Route path="/yes" exact component={ProductList}/>
-            <Route path="/no" component={OldComponent}/>
+            <Route path="/" exact component={ProductList}></Route>
+            {/* <Route path="/productList" exact component={ProductList}></Route> */}
+            <Route path="/createProduct" component={CreateProduct} /> 
+            <Route path="/editProduct/:id" component={EditProduct} />
         </Router>
     );
 }

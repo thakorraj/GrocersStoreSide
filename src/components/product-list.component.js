@@ -1,41 +1,77 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import axios from 'axios';
-import NewComponent from "./new-component.component";
+import { Link } from 'react-router-dom';
 
-export default class ProductList extends Component {
-    constructor(props) {
-        super(props);
+const Product = props => (
+    <tr>
+      <td>{props.product.pname}</td>
+       <td>{props.product.amount}</td>
+      
+      
+      <td>
+        <Link to={"/editProduct/"+props.product._id}>Edit</Link> | <a href="#" onClick={() => { props.deleteProduct(props.product._id) }}>Delete</a>
+      </td>
+    </tr>
+  )
 
-        this.state = {
-            product: ''
-        }
+export default class ProductList extends Component
+{
+    constructor(props)
+    {
+     super(props);
+     this.deleteProduct=this.deleteProduct.bind(this);
+        this.state={
+            product:[]
+    
+        };
+
     }
-
-    componentDidMount() {
-        axios.get('http://localhost:4000/')
-            .then(response => {
-                this.setState({
-                    product: response.data
-                });
-
-            });
-
+    componentDidMount(){
+        axios.get('http://localhost:5000/api/products')
+        .then(res=>{
+            this.setState({
+                product:res.data
+            })
+        })
+        .catch((error)=>{
+            console.log(error);
+        });
+       
+        
     }
-
-    render() {
-        // var data = '';
-        if (this.state.product) {
-            // data = <NewComponent data={this.state.product}/>;
-            window.location.href = this.state.product;
-        }
-
-        return (
+    deleteProduct(id) {
+      axios.delete('http://localhost:5000/api/products/'+id)
+        .then(response => { console.log(response.data)});
+  
+      this.setState({
+          //el is every element in exercise error so el._id will refer database id
+        product: this.state.product.filter(el => el._id !== id)
+      })
+    }
+    productlist()
+    {
+        return this.state.product.map(currentproduct => {
+            return <Product product={currentproduct} deleteProduct={this.deleteProduct} key={currentproduct._id}/>;
+          })
+    }
+    render(){
+        return(
             <div>
-                {/* {this.setState({ product: null })} */}
-
-                {/* {data} */}
-                {console.log(window.location.pathname.toString())}
-            </div>
+            <h3>All Product</h3>
+            <table className="table">
+              <thead className="thead-light">
+                <tr>
+                  <th>Name</th>
+                  <th>Amount</th>
+                  
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                { this.productlist() }
+              </tbody>
+            </table>
+          </div>
         )
     }
 }
