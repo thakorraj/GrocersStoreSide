@@ -2,15 +2,14 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-const Order = props => (
+const Product = props => (
     <tr>
-      <td>{props.order.pname}</td>
-       <td>{props.order.amount}</td>
+      <td>{props.product[0].product[0].pname}</td>
+      <td>{props.product.fk_store_id}</td>
+       <td>{props.product.fk_user_id}</td>
       
       
-      <td>
-        <Link to={"/editProduct/"+props.product._id}>Edit</Link> | <a href="#" onClick={() => { props.deleteStore(props.product._id) }}>delete</a>
-      </td>
+
     </tr>
   )
 
@@ -19,7 +18,7 @@ export default class ProductList extends Component
     constructor(props)
     {
      super(props);
-    //  this.deleteProduct=this.deleteProduct.bind(this);
+     
         this.state={
             product:[]
     
@@ -27,11 +26,14 @@ export default class ProductList extends Component
 
     }
     componentDidMount(){
-        axios.get('http://localhost:5000/api/products')
+        axios.get('http://localhost:5000/api/orders')
         .then(res=>{
             this.setState({
-              product:res.data
+                product:res.data
+                
             })
+            console.log(this.state.product[0].product[0].pname);
+            console.log(this.state.product[0].product[1].pname);
         })
         .catch((error)=>{
             console.log(error);
@@ -39,35 +41,28 @@ export default class ProductList extends Component
        
         
     }
-    deleteStore(id) {
-      axios.delete('http://localhost:5000/api/products/'+id)
-        .then(response => { console.log(response.data)});
-  
-      this.setState({
-          //el is every element in exercise error so el._id will refer database id
-          product: this.state.product.filter(el => el._id !== id)
-      })
-    }
-    storelist()
+
+    productlist()
     {
-        return this.state.product.map(currentstore => {
-            return <Product product={currentstore} deleteStore={this.deleteStore} key={currentstore._id}/>;
+        return this.state.product.map(currentproduct => {
+            return <Product product={currentproduct} deleteProduct={this.deleteProduct} key={currentproduct._id}/>;
           })
     }
     render(){
         return(
             <div>
-            <h3>All Stores</h3>
+            <h3>All Product</h3>
             <table className="table">
               <thead className="thead-light">
                 <tr>
                   <th>Name</th>
                   <th>Amount</th>
-                  <th>Action</th>
+                  
+                  
                 </tr>
               </thead>
               <tbody>
-                { this.storelist() }
+                { this.productlist() }
               </tbody>
             </table>
           </div>

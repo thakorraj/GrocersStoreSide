@@ -5,6 +5,7 @@ import Navbar from "./components/navbar.component"
 import ProductList from "./components/product-list.component";
 import CreateProduct from "./components/create-product.component";
 import EditProduct from "./components/edit-product.component";
+import OrderList from "./components/order-list.component";
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
             {/* <Route path="/productList" exact component={ProductList}></Route> */}
             <Route path="/createProduct" component={CreateProduct} /> 
             <Route path="/editProduct/:id" component={EditProduct} />
+            <Route path="/orderList" component={OrderList} />
         </Router>
     );
 }
