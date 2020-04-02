@@ -10,12 +10,15 @@ const Product = props => (
       <td>
       {Object.keys(props.product.product).map((obj, i) => {
       return (
-          
-        <p>{props.product.product[obj].pname}</p>
-          
-          
+         <p>
+        <p>Name:{props.product.product[obj].pname}</p>
+        <p>Quantity:{props.product.product[obj].quantity}</p>  
+        <p>Price:{props.product.product[obj].amount}</p>
+        <br></br>
+
+        </p> 
       )})}</td>
-      <td>{props.product.fk_store_id}</td>
+      
        <td>{props.product.fk_user_id}</td>
       
       
@@ -84,8 +87,8 @@ export default class ProductList extends Component
             <table className="table">
               <thead className="thead-light">
                 <tr>
-                  <th>Name</th>
-                  <th>Amount</th>
+                  <th>Orders</th>
+                  <th>User</th>
                   
                   
                 </tr>
