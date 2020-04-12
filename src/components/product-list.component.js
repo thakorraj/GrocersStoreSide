@@ -27,7 +27,7 @@ export default class ProductList extends Component
 
     }
     componentDidMount(){
-        axios.get('http://localhost:5000/api/products')
+        axios.get('http://localhost:5000/api/products/getAllProducts')
         .then(res=>{
             this.setState({
                 product:res.data

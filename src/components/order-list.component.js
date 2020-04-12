@@ -5,35 +5,28 @@ import { Link } from 'react-router-dom';
 
 
 const Product = props => (
+ 
     <tr>
+      {props.key}
       {/* <td>{props.product[0].product[0].pname}</td> */}
       <td>
       {Object.keys(props.product.product).map((obj, i) => {
       return (
          <p>
-        <p>Name:{props.product.product[obj].pname}</p>
+        <p>Name:{props.product.product[obj].name}</p>
         <p>Quantity:{props.product.product[obj].quantity}</p>  
-        <p>Price:{props.product.product[obj].amount}</p>
+        <p>Price:{props.product.product[obj].price}</p>
         <br></br>
 
         </p> 
       )})}</td>
       
        <td>{props.product.fk_user_id}</td>
+       <td>${props.product.total}</td>
+       <td>
+       <button onClick={() => { props.OnDelete(props.product._id)} }>Delieverd</button>
+      </td>
       
-      
-
-    </tr>
-  )
-
-  const Product1 = props => (
-    <tr>
-      {/* <td>{props.product[0].product[0].pname}</td> */}
-      <td>{props.product.pname}</td>
-       <td>{props.product.quantity}</td>
-      
-      
-
     </tr>
   )
 
@@ -43,6 +36,8 @@ export default class ProductList extends Component
     {
      super(props);
      
+
+     this.OnDelete = this.OnDelete.bind(this)
         this.state={
             product:[]
     
@@ -56,7 +51,8 @@ export default class ProductList extends Component
                 product:res.data
                 
             })
-            console.log(this.state.product[0].product[1]);
+          
+            console.log(this.state.product+"final data received");
             //console.log(this.state.product[0].product[1].pname);
         })
         .catch((error)=>{
@@ -66,19 +62,28 @@ export default class ProductList extends Component
         
     }
 
+    OnDelete(id)
+    {
+      console.log("Here");
+      axios.delete('http://localhost:5000/api/orders/' + id)
+          .then(res=>{
+            
+              console.log(res.data + "Deleted");
+           
+          })
+          .catch((error)=>{
+              console.log(error);
+          });
+          this.setState({ product: this.state.product.filter(e1 => e1._id !== id)})
+
+    }
+
     productlist()
     {
         return this.state.product.map(currentproduct => {
-            return <Product product={currentproduct} deleteProduct={this.deleteProduct} key={currentproduct._id}/>;
+            return <Product product={currentproduct} OnDelete={this.OnDelete} key={currentproduct._id}/>;
           })
     }
-    productPlist()
-    {
-        return this.currentproduct.product.map(currentproduct1 => {
-            return <Product1 product={currentproduct1}  key={currentproduct1._id}/>;
-          })
-    }
-
 
     render(){
         return(
@@ -89,13 +94,13 @@ export default class ProductList extends Component
                 <tr>
                   <th>Orders</th>
                   <th>User</th>
-                  
+                  <th>Total Price</th>
+                  <th>Status</th>
                   
                 </tr>
               </thead>
               <tbody>
                 { this.productlist() }
-                {/* {console.log(this.productPlist())} */}
               </tbody>
             </table>
           </div>
